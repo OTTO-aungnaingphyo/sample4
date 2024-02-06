@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}
+Cmt post
+{% endblock  %}
+
+{% block body %}
+<div class="container">
+    <form method="POST" class="card p-3 shadow" enctype='multipart/form-data'>
+            {% csrf_token %}
+            <h3><u> Cmt Update Form</u></h3>
+
+          <div class="mb-3">
+            <label  class="form-label">content</label>
+            <textarea name="content" style= "height:200px;" class="form-control" required>{{cmt.content}}</textarea>
+            </select>
+          </div>
+          
+          <button  type="submit" class="btn btn-primary">Update</button>
+        </fieldset>
+      </form>
+</div>
+{% endblock  %}

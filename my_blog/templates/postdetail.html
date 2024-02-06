@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+ {% load humanize %}
+{% block title %}
+{% endblock  %}
+
+{% block body %}
+<div class= "container row d-flex justify-content-center mx-auto">
+    
+    <div class="card col-3 col-sm-6 col-md-4 col-lg-3 shadow-lg" style="width: 18rem;">
+    {% if post.image %}
+    <img src="{{post.image.url}}" class="card-img-top">
+    {% endif %}    
+    <div class="card-body">
+      <h5 class="card-title">{{post.title}}</h5>
+      <p class="card-text">{{post.content}}</p>
+      <p class="card-text">{{post.create_date|naturaltime }}/{{post.author}}/{{post.category}}</p>
+
+      {% if user.is_superuser  %}
+      <a href="/blog/delete/{{post.id}}/" class="btn btn-primary">Delete</a>
+      <a href="/blog/update/{{post.id}}/" class="btn btn-primary">Update</a>      
+      {%  elif   post.author.id == user.id %}
+      <a href="/blog/delete/{{post.id}}/" class="btn btn-primary">Delete</a>
+      <a href="/blog/update/{{post.id}}/" class="btn btn-primary">Update</a>
+      {% endif %}
+
+    </div>
+    
+</div>
+
+
+  <div class="container my-5 py-5 text-dark">
+    {% for c in cmt %}
+    <div class="row d-flex justify-content-center">
+      <div class="col-md-11 col-lg-9 col-xl-7">
+        <div class="d-flex flex-start mb-4">
+          <img class="rounded-circle shadow-1-strong me-3"
+            src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(32).webp" alt="avatar" width="65"
+            height="65" />
+          <div class="card w-100">
+            <div class="card-body p-4">
+              <div class="">
+                <h5>{{c.author}}</h5>
+                <p class="small">{{c.create_date| naturaltime}}</p>
+                <p>
+                 {{c.content}}
+                </p>
+                {% if c.author.id == user.id %}
+                <div>
+                  <a  href="/blog/cmt/detele/{{post.id}}/{{c.id}}/" class="btn btn-danger" onclick="return confirm('Are you sure !')">Delete</a>
+                  <a href="/blog/cmt/update/{{post.id}}/{{c.id}}/" class="btn btn-warning">Update</a>
+                </div>
+                {% endif %}
+
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div> 
+        
+
+<form method="POST" class="card shadow p-3">
+ <div>
+  
+    {% csrf_token %}
+    <textarea name="content" required style="height:130px;" class="form-control mb-2"></textarea>
+    <div class="d-flex justify-content-end">
+        <button  type="submit"class="btn btn-primary">submit</button>
+    </div>
+  
+ </div>
+</form>
+
+
+
+{% endblock  %}
